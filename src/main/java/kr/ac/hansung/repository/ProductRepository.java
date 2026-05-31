@@ -6,16 +6,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
     long countByStockEquals(int stock);
 
-    @Query("""
-        select p
-        from Product p
-        where :keyword is null
-           or :keyword = ''
-           or lower(p.name) like lower(concat('%', :keyword, '%'))
-        """)
-    Page<Product> searchByName(@Param("keyword") String keyword, Pageable pageable);
+    @Query("SELECT p FROM Product p WHERE p.name LIKE %:keyword%")
+    Page<Product> findByNameContaining(@Param("keyword") String keyword,
+                                        Pageable pageable);
 }
