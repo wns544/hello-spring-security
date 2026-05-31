@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<footer th:fragment="practiceInfo" class="practice-footer">
+    <style>
+        .practice-footer {
+            margin-top: 3rem;
+            padding: 1rem 0;
+            border-top: 1px solid #dee2e6;
+            color: #495057;
+            font-size: .9rem;
+            text-align: center;
+        }
+    </style>
+    <span>실습 수행 일시: </span>
+    <span id="practiceDateTime"></span>
+    <span> | 학번: 1971293 | 성명: 장원준</span>
+    <script>
+        function updatePracticeDateTime() {
+            const now = new Date();
+            const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
+            const hour = now.getHours();
+            const ampm = hour < 12 ? '오전' : '오후';
+            const displayHour = hour % 12 || 12;
+            const pad = value => String(value).padStart(2, '0');
+            const text = `${now.getFullYear()}년 ${now.getMonth() + 1}월 ${now.getDate()}일 (${weekdays[now.getDay()]}) ${ampm} ${pad(displayHour)}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+            document.getElementById('practiceDateTime').textContent = text;
+        }
+        updatePracticeDateTime();
+        setInterval(updatePracticeDateTime, 1000);
+    </script>
+</footer>
+</body>
+</html>
